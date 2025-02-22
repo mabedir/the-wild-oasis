@@ -103,6 +103,7 @@ function Toggle({ id }) {
     </StyledToggle>
   );
 }
+
 function List({ id, children }) {
   const { openId, close, position } = useContext(MenusContext);
   const ref = useOutsideClick(close);
@@ -116,6 +117,7 @@ function List({ id, children }) {
     document.body
   );
 }
+
 function Button({ children, icon, onClick }) {
   const { close } = useContext(MenusContext);
   function handleClick() {
