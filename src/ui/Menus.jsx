@@ -75,13 +75,11 @@ function Menus({ children }) {
   const open = setOpenId;
 
   return (
-    <div>
-      <MenusContext.Provider
-        value={{ open, close, openId, position, setPosition }}
-      >
-        {children}
-      </MenusContext.Provider>
-    </div>
+    <MenusContext.Provider
+      value={{ open, close, openId, position, setPosition }}
+    >
+      {children}
+    </MenusContext.Provider>
   );
 }
 
@@ -89,6 +87,8 @@ function Toggle({ id }) {
   const { openId, close, open, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
+    e.stopPropagation();
+
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
       x: window.innerWidth - rect.width - rect.x,
@@ -106,7 +106,7 @@ function Toggle({ id }) {
 
 function List({ id, children }) {
   const { openId, close, position } = useContext(MenusContext);
-  const ref = useOutsideClick(close);
+  const ref = useOutsideClick(close, false);
 
   if (openId !== id) return null;
 
