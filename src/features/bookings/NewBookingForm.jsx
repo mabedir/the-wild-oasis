@@ -104,7 +104,10 @@ function NewBookingForm({ onCloseModal }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      type={onCloseModal ? 'modal' : 'regular'}
+    >
       <FormRow label='Start date' error={errors?.startDate?.message}>
         <Input
           disabled={isCreating}
