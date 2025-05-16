@@ -1,18 +1,18 @@
+import { differenceInDays, isBefore, isDate, startOfToday } from 'date-fns';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '../../ui/Button';
+import Checkbox from '../../ui/Checkbox';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
-import { useCabins } from '../cabins/useCabins';
 import Spinner from '../../ui/Spinner';
-import Checkbox from '../../ui/Checkbox';
-import Button from '../../ui/Button';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { differenceInDays, isBefore, isDate, startOfToday } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useCabins } from '../cabins/useCabins';
+import { useAllGuests } from '../guests/useAllGuests';
 import { useSettings } from '../settings/useSettings';
-import toast from 'react-hot-toast';
-import { useGuests } from '../../hooks/useGuests';
 import { useCreateBooking } from './useCreateBooking';
 
 const StyledSelect = styled.select`
@@ -27,7 +27,7 @@ function NewBookingForm({ onCloseModal }) {
   const [wantsBreakfast, setWantsBreakfast] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const { cabins, isLoading } = useCabins();
-  const { guests, isLoading: isLoadingGuests } = useGuests();
+  const { guests, isLoading: isLoadingGuests } = useAllGuests();
   const { settings, isLoading: isLoadingSettings } = useSettings();
   const { createBooking, isLoading: isCreating } = useCreateBooking();
   const navigate = useNavigate();

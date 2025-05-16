@@ -7,7 +7,7 @@ function AddBooking() {
     <div>
       <Modal>
         <Modal.Open opens='cabin-form'>
-          <Button>Add new cabin</Button>
+          <Button>Add new booking</Button>
         </Modal.Open>
         <Modal.Window name='cabin-form'>
           <NewBookingForm />
