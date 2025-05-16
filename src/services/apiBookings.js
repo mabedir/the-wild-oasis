@@ -6,7 +6,7 @@ export async function getBookings({ filter, sortBy, page }) {
   let query = supabase
     .from('bookings')
     .select(
-      'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice,  cabins(name), guests(fullName, email)',
+      'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)',
       { count: 'exact' }
     );
   // FILTER
@@ -125,14 +125,6 @@ export async function deleteBooking(id) {
     console.error(error);
     throw new Error('Booking could not be deleted');
   }
-  return data;
-}
-
-export async function getGuests() {
-  const { data, error } = await supabase.from('guests').select('*');
-
-  if (error) throw new Error(error.message);
-
   return data;
 }
 

@@ -11,7 +11,6 @@ export function useCreateBooking() {
       toast.success('New booking successfully created');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error(err.message);
     },
   });

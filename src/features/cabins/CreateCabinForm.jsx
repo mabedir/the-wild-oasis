@@ -45,7 +45,15 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         }
       );
     else
-      createCabin({ ...data, image: image }, { onSuccess: (data) => reset() });
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
   }
 
   function onError(errors) {}
@@ -116,7 +124,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label='Cabin photo'>
+      <FormRow label='Cabin photo' error={errors?.image?.message}>
         <FileInput
           id='image'
           accept='image/*'

@@ -9,11 +9,12 @@ function Bookings() {
     <>
       <Row type='horizontal'>
         <Heading as='h1'>All bookings</Heading>
-        <AddBooking />
         <BookingTableOperations />
       </Row>
 
       <BookingTable />
+
+      <AddBooking />
     </>
   );
 }
