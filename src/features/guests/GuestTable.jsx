@@ -25,7 +25,7 @@ function GuestTable() {
     filteredGuests = guests.filter((guest) => guest.discount > 0);
 
   // SORT
-  const sortBy = searchParams.get('sortBy') || 'startDate-asc';
+  const sortBy = searchParams.get('sortBy') || 'created_at-desc';
   const [field, direction] = sortBy.split('-');
   const modifier = direction === 'asc' ? 1 : -1;
   // const sortedGuests = filteredGuests.sort(
