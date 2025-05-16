@@ -28,9 +28,15 @@ function GuestTable() {
   const sortBy = searchParams.get('sortBy') || 'startDate-asc';
   const [field, direction] = sortBy.split('-');
   const modifier = direction === 'asc' ? 1 : -1;
-  const sortedGuests = filteredGuests.sort(
-    (a, b) => (a[field] - b[field]) * modifier
-  );
+  // const sortedGuests = filteredGuests.sort(
+  //   (a, b) => (a[field] - b[field]) * modifier
+  // );
+  const sortedGuests = filteredGuests.sort((a, b) => {
+    if (typeof a[field] === 'string' && typeof b[field] === 'string') {
+      return a[field].localeCompare(b[field]) * modifier;
+    }
+    return (a[field] - b[field]) * modifier;
+  });
 
   return (
     <Menus>

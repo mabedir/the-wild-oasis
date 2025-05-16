@@ -79,7 +79,7 @@ function GuestRow({ guest }) {
 
             <Modal.Window name='delete'>
               <ConfirmDelete
-                resourceName='cabins'
+                resourceName='guest'
                 disabled={isDeleting}
                 onConfirm={() => deleteGuest(id)}
               />

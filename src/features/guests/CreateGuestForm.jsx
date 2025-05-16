@@ -78,7 +78,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label='National ID' error={errors?.name?.message}>
+      <FormRow label='National ID' error={errors?.nationalID?.message}>
         <Input
           type='text'
           id='nationalID'
@@ -87,7 +87,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label='Nationality' error={errors?.name?.message}>
+      <FormRow label='Nationality' error={errors?.nationality?.message}>
         <Input
           type='text'
           id='nationality'
