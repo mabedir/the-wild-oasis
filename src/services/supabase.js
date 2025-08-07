@@ -14,7 +14,7 @@ import { createClient } from '@supabase/supabase-js';
  * The anon key only allows access to data that RLS policies permit.
  * Without proper authentication and RLS policies, this key cannot access sensitive data.
  *
- * Learn more: https://supabase.com/docs/guides/auth/row-level-security
+ * Learn more: https://supabase.com/docs/guides/database/postgres/row-level-security
  */
 export const supabaseUrl = 'https://lhhmhrgrvalvdtbthxvu.supabase.co';
 const supabaseKey =
