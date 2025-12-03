@@ -36,7 +36,7 @@ function CabinTable() {
   }, [filteredCabins, field, modifier]);
 
   if (isLoading) return <Spinner />;
-  if (!cabins.length) return <Empty resourceName='cabins' />;
+  if (!cabins?.length) return <Empty resourceName='cabins' />;
 
   return (
     <Menus>

@@ -24,7 +24,8 @@ function DarkModeProvider({ children }) {
 
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode((isDark) => !isDark);
-  }, [setIsDarkMode]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = useMemo(
     () => ({

@@ -40,7 +40,7 @@ function GuestTable() {
   }, [filteredGuests, field, modifier]);
 
   if (isLoading) return <Spinner />;
-  if (!guests.length) return <Empty resourceName='guests' />;
+  if (!guests?.length) return <Empty resourceName='guests' />;
 
   return (
     <Menus>
