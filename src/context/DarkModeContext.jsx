@@ -24,6 +24,7 @@ function DarkModeProvider({ children }) {
 
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode((isDark) => !isDark);
+  // State setters from useState are stable and don't need to be in dependencies
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -45,7 +46,7 @@ function DarkModeProvider({ children }) {
 function useDarkMode() {
   const context = useContext(DarkModeContext);
   if (context === undefined)
-    throw new Error('DarkModeContext was used outside of DarModeProvider');
+    throw new Error('DarkModeContext was used outside of DarkModeProvider');
   return context;
 }
 

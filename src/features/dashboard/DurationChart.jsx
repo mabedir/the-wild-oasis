@@ -124,6 +124,9 @@ function prepareData(startData, stays) {
     );
   }
 
+  // Create a deep copy of startData to avoid mutation
+  const initialData = startData.map((obj) => ({ ...obj }));
+
   const data = stays
     .reduce((arr, cur) => {
       const num = cur.numNights;
@@ -136,7 +139,7 @@ function prepareData(startData, stays) {
       if (num >= 15 && num <= 21) return incArrayValue(arr, '15-21 nights');
       if (num >= 21) return incArrayValue(arr, '21+ nights');
       return arr;
-    }, startData)
+    }, initialData)
     .filter((obj) => obj.value > 0);
 
   return data;
