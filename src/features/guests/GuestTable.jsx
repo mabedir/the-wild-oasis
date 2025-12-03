@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Menus from '../../ui/Menus';
 import Spinner from '../../ui/Spinner';
@@ -11,32 +12,35 @@ function GuestTable() {
   const { isLoading, guests, count } = useGuests();
   const [searchParams] = useSearchParams();
 
-  if (isLoading) return <Spinner />;
-  if (!guests.length) return <Empty resourceName='guests' />;
-
   // FILTER
   const filterValue = searchParams.get('filter') || 'all';
 
-  let filteredGuests;
-  if (filterValue === 'all') filteredGuests = guests;
-  if (filterValue === 'no-discount')
-    filteredGuests = guests.filter((guest) => guest.discount === 0);
-  if (filterValue === 'with-discount')
-    filteredGuests = guests.filter((guest) => guest.discount > 0);
+  const filteredGuests = useMemo(() => {
+    if (!guests) return [];
+    if (filterValue === 'all') return guests;
+    if (filterValue === 'no-discount')
+      return guests.filter((guest) => guest.discount === 0);
+    if (filterValue === 'with-discount')
+      return guests.filter((guest) => guest.discount > 0);
+    return guests;
+  }, [guests, filterValue]);
 
   // SORT
   const sortBy = searchParams.get('sortBy') || 'created_at-desc';
   const [field, direction] = sortBy.split('-');
   const modifier = direction === 'asc' ? 1 : -1;
-  // const sortedGuests = filteredGuests.sort(
-  //   (a, b) => (a[field] - b[field]) * modifier
-  // );
-  const sortedGuests = filteredGuests.sort((a, b) => {
-    if (typeof a[field] === 'string' && typeof b[field] === 'string') {
-      return a[field].localeCompare(b[field]) * modifier;
-    }
-    return (a[field] - b[field]) * modifier;
-  });
+
+  const sortedGuests = useMemo(() => {
+    return [...filteredGuests].sort((a, b) => {
+      if (typeof a[field] === 'string' && typeof b[field] === 'string') {
+        return a[field].localeCompare(b[field]) * modifier;
+      }
+      return (a[field] - b[field]) * modifier;
+    });
+  }, [filteredGuests, field, modifier]);
+
+  if (isLoading) return <Spinner />;
+  if (!guests?.length) return <Empty resourceName='guests' />;
 
   return (
     <Menus>

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
@@ -74,6 +75,10 @@ function CabinRow({ cabin }) {
     });
   }
 
+  const handleDeleteCabin = useCallback(() => {
+    deleteCabin(cabinId);
+  }, [deleteCabin, cabinId]);
+
   return (
     <Table.Row>
       <Img src={image} />
@@ -116,7 +121,7 @@ function CabinRow({ cabin }) {
               <ConfirmDelete
                 resourceName='cabins'
                 disabled={isDeleting}
-                onConfirm={() => deleteCabin(cabinId)}
+                onConfirm={handleDeleteCabin}
               />
             </Modal.Window>
           </Menus.Menu>

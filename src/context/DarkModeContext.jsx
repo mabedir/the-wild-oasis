@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
 const DarkModeContext = createContext();
@@ -22,17 +22,22 @@ function DarkModeProvider({ children }) {
     [isDarkMode]
   );
 
-  function toggleDarkMode() {
+  const toggleDarkMode = useCallback(() => {
     setIsDarkMode((isDark) => !isDark);
-  }
+  // State setters from useState are stable and don't need to be in dependencies
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      isDarkMode,
+      toggleDarkMode,
+    }),
+    [isDarkMode, toggleDarkMode]
+  );
 
   return (
-    <DarkModeContext.Provider
-      value={{
-        isDarkMode,
-        toggleDarkMode,
-      }}
-    >
+    <DarkModeContext.Provider value={value}>
       {children}
     </DarkModeContext.Provider>
   );
@@ -41,7 +46,7 @@ function DarkModeProvider({ children }) {
 function useDarkMode() {
   const context = useContext(DarkModeContext);
   if (context === undefined)
-    throw new Error('DarkModeContext was used outside of DarModeProvider');
+    throw new Error('DarkModeContext was used outside of DarkModeProvider');
   return context;
 }
 

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Menus from '../../ui/Menus';
 import Spinner from '../../ui/Spinner';
@@ -10,26 +11,32 @@ function CabinTable() {
   const { isLoading, cabins } = useCabins();
   const [searchParams] = useSearchParams();
 
-  if (isLoading) return <Spinner />;
-  if (!cabins.length) return <Empty resourceName='cabins' />;
-
   // FILTER
   const filterValue = searchParams.get('discount') || 'all';
 
-  let filteredCabins;
-  if (filterValue === 'all') filteredCabins = cabins;
-  if (filterValue === 'no-discount')
-    filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
-  if (filterValue === 'with-discount')
-    filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
+  const filteredCabins = useMemo(() => {
+    if (!cabins) return [];
+    if (filterValue === 'all') return cabins;
+    if (filterValue === 'no-discount')
+      return cabins.filter((cabin) => cabin.discount === 0);
+    if (filterValue === 'with-discount')
+      return cabins.filter((cabin) => cabin.discount > 0);
+    return cabins;
+  }, [cabins, filterValue]);
 
   // SORT
   const sortBy = searchParams.get('sortBy') || 'startDate-asc';
   const [field, direction] = sortBy.split('-');
   const modifier = direction === 'asc' ? 1 : -1;
-  const sortedCabins = filteredCabins.sort(
-    (a, b) => (a[field] - b[field]) * modifier
-  );
+  
+  const sortedCabins = useMemo(() => {
+    return [...filteredCabins].sort(
+      (a, b) => (a[field] - b[field]) * modifier
+    );
+  }, [filteredCabins, field, modifier]);
+
+  if (isLoading) return <Spinner />;
+  if (!cabins?.length) return <Empty resourceName='cabins' />;
 
   return (
     <Menus>
