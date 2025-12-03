@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import DashboardBox from './DashboardBox';
 import Heading from '../../ui/Heading';
@@ -26,36 +27,46 @@ const StyledSalesChart = styled(DashboardBox)`
 function SalesChart({ bookings, numDays }) {
   const { isDarkMode } = useDarkMode();
 
-  const allDates = eachDayOfInterval({
-    start: subDays(new Date(), numDays - 1),
-    end: new Date(),
-  });
+  const allDates = useMemo(
+    () =>
+      eachDayOfInterval({
+        start: subDays(new Date(), numDays - 1),
+        end: new Date(),
+      }),
+    [numDays]
+  );
 
-  const data = allDates.map((date) => {
-    return {
-      label: format(date, 'MMM dd'),
-      totalSales: bookings
-        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.totalPrice, 0),
-      extrasSales: bookings
-        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.extrasPrice, 0),
-    };
-  });
-
-  const colors = isDarkMode
-    ? {
-        totalSales: { stroke: '#4f46e5', fill: '#4f46e5' },
-        extrasSales: { stroke: '#22c55e', fill: '#22c55e' },
-        text: '#e5e7eb',
-        background: '#18212f',
-      }
-    : {
-        totalSales: { stroke: '#4f46e5', fill: '#c7d2fe' },
-        extrasSales: { stroke: '#16a34a', fill: '#dcfce7' },
-        text: '#374151',
-        background: '#fff',
+  const data = useMemo(() => {
+    return allDates.map((date) => {
+      return {
+        label: format(date, 'MMM dd'),
+        totalSales: bookings
+          .filter((booking) => isSameDay(date, new Date(booking.created_at)))
+          .reduce((acc, cur) => acc + cur.totalPrice, 0),
+        extrasSales: bookings
+          .filter((booking) => isSameDay(date, new Date(booking.created_at)))
+          .reduce((acc, cur) => acc + cur.extrasPrice, 0),
       };
+    });
+  }, [allDates, bookings]);
+
+  const colors = useMemo(
+    () =>
+      isDarkMode
+        ? {
+            totalSales: { stroke: '#4f46e5', fill: '#4f46e5' },
+            extrasSales: { stroke: '#22c55e', fill: '#22c55e' },
+            text: '#e5e7eb',
+            background: '#18212f',
+          }
+        : {
+            totalSales: { stroke: '#4f46e5', fill: '#c7d2fe' },
+            extrasSales: { stroke: '#16a34a', fill: '#dcfce7' },
+            text: '#374151',
+            background: '#fff',
+          },
+    [isDarkMode]
+  );
   return (
     <StyledSalesChart>
       <Heading as='h2'>

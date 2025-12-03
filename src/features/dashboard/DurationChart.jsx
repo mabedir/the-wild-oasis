@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import Heading from '../../ui/Heading';
 import {
@@ -143,8 +144,14 @@ function prepareData(startData, stays) {
 
 function DurationChart({ confirmedStays }) {
   const { isDarkMode } = useDarkMode();
-  const startData = isDarkMode ? startDataDark : startDataLight;
-  const data = prepareData(startData, confirmedStays);
+  const startData = useMemo(
+    () => (isDarkMode ? startDataDark : startDataLight),
+    [isDarkMode]
+  );
+  const data = useMemo(
+    () => prepareData(startData, confirmedStays),
+    [startData, confirmedStays]
+  );
 
   return (
     <ChartBox>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
 const DarkModeContext = createContext();
@@ -22,17 +22,20 @@ function DarkModeProvider({ children }) {
     [isDarkMode]
   );
 
-  function toggleDarkMode() {
+  const toggleDarkMode = useCallback(() => {
     setIsDarkMode((isDark) => !isDark);
-  }
+  }, [setIsDarkMode]);
+
+  const value = useMemo(
+    () => ({
+      isDarkMode,
+      toggleDarkMode,
+    }),
+    [isDarkMode, toggleDarkMode]
+  );
 
   return (
-    <DarkModeContext.Provider
-      value={{
-        isDarkMode,
-        toggleDarkMode,
-      }}
-    >
+    <DarkModeContext.Provider value={value}>
       {children}
     </DarkModeContext.Provider>
   );

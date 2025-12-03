@@ -23,7 +23,10 @@ export const getToday = function (options = {}) {
   return today.toISOString();
 };
 
-export const formatCurrency = (value) =>
-  new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
-    value
-  );
+// Create a single formatter instance to avoid recreating on every call
+const currencyFormatter = new Intl.NumberFormat('en', { 
+  style: 'currency', 
+  currency: 'USD' 
+});
+
+export const formatCurrency = (value) => currencyFormatter.format(value);

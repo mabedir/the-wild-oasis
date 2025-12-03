@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
 
@@ -70,6 +71,22 @@ function BookingRow({
     'checked-out': 'silver',
   };
 
+  const handleSeeDetails = useCallback(() => {
+    navigate(`/bookings/${bookingId}`);
+  }, [navigate, bookingId]);
+
+  const handleCheckIn = useCallback(() => {
+    navigate(`/checkin/${bookingId}`);
+  }, [navigate, bookingId]);
+
+  const handleCheckout = useCallback(() => {
+    checkout(bookingId);
+  }, [checkout, bookingId]);
+
+  const handleDeleteBooking = useCallback(() => {
+    deleteBooking(bookingId);
+  }, [deleteBooking, bookingId]);
+
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
@@ -100,17 +117,14 @@ function BookingRow({
         <Menus.Menu>
           <Menus.Toggle id={bookingId} />
           <Menus.List id={bookingId}>
-            <Menus.Button
-              icon={<HiEye />}
-              onClick={() => navigate(`/bookings/${bookingId}`)}
-            >
+            <Menus.Button icon={<HiEye />} onClick={handleSeeDetails}>
               See Details
             </Menus.Button>
 
             {status === 'unconfirmed' && (
               <Menus.Button
                 icon={<HiArrowDownOnSquare />}
-                onClick={() => navigate(`/checkin/${bookingId}`)}
+                onClick={handleCheckIn}
               >
                 Check In
               </Menus.Button>
@@ -119,7 +133,7 @@ function BookingRow({
             {status === 'checked-in' && (
               <Menus.Button
                 icon={<HiArrowUpOnSquare />}
-                onClick={() => checkout(bookingId)}
+                onClick={handleCheckout}
                 disabled={isCheckingOut}
               >
                 Check Out
@@ -136,7 +150,7 @@ function BookingRow({
           <ConfirmDelete
             resourceName='booking'
             disabled={isDeleting}
-            onConfirm={() => deleteBooking(bookingId)}
+            onConfirm={handleDeleteBooking}
           />
         </Modal.Window>
       </Modal>

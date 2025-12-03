@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   HiOutlineBanknotes,
   HiOutlineBriefcase,
@@ -9,13 +10,19 @@ import { formatCurrency } from '../../utils/helpers';
 function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
   const numBookings = bookings.length;
 
-  const sales = bookings.reduce((acc, cur) => acc + cur.totalPrice, 0);
+  const sales = useMemo(
+    () => bookings.reduce((acc, cur) => acc + cur.totalPrice, 0),
+    [bookings]
+  );
 
   const checkins = confirmedStays.length;
 
-  const occupation =
-    confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
-    (numDays * cabinCount);
+  const occupation = useMemo(
+    () =>
+      confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
+      (numDays * cabinCount),
+    [confirmedStays, numDays, cabinCount]
+  );
 
   return (
     <>
